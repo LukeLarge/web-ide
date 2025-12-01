@@ -1,0 +1,84 @@
+            - name: Swift test action for Datadog
+  # You may pin to the exact commit or the version.
+  # uses: DataDog/swift-test-action@72dbb684305bfae8f28230a59c02765011937cd4
+  uses: DataDog/swift-test-action@1.0.1
+  with:
+    # Datadog API key
+    api_key: 
+    # Datadog Application key
+    app_key: # optional
+    # (Deprecated) Datadog Application key
+    application_key: # optional
+    # Platform to run: \"ios\", \"macos\" or \"tvos\". By default: \"ios\"
+    platform: # optional, default is ios
+    # .xcworkspace file, if not set, workspace will be autoselected
+    workspace: # optional
+    # .xcodeproj file, if not set, project will be autoselected
+    project: # optional
+    # Scheme to test, if not set, scheme will be autoselected
+    scheme: # optional
+    # Sdk used for building, by default: \"iphonesimulator\" will be used
+    sdk: # optional
+    # Destination for testing, by default: \"platform=iOS Simulator,name=iPhone 13\"
+    destination: # optional
+    # Configuration for testing, by default: \"Debug\"
+    configuration: # optional
+    # Version of the Datagog SDK testing framework to use for testing, by default the latest stable
+    libraryVersion: # optional
+    # These input will be added directly to the build/test command
+    extraParameters: # optional, default is 
+                      - name: Sauce Security Action
+  # You may pin to the exact commit or the version.
+  # uses: saucelabs/sauce-security-action@5008ddffb96db501fc71486cad3950304a73a2d5
+  uses: saucelabs/sauce-security-action@v0.3.0
+  with:
+    # Sauce Labs user name.
+    username: 
+    # Sauce Labs API Key.
+    accessKey: 
+    # Url to the application under test.
+    target: 
+    # An url to an OpenAPI specification to help scan the full API.
+    openapi: # optional
+    # An url to a graphql schema to help scan the full API.
+    graphql: # optional
+    # Amount of severe vulnerabilities that are allowed to be discovered - if set to `-1` these will be ignored. (Default: 0)
+    allowedSevereVulnerabilties: # optional, default is 0
+    # Amount of medium vulnerabilities that are allowed to be discovered - if set to `-1` these will be ignored. (Default: 0)
+    allowedMediumVulnerabilties: # optional, default is 0
+    # Amount of low vulnerabilities that are allowed to be discovered - if set to `-1` these will be ignored. (Default: 0)
+    allowedLowVulnerabilties: # optional, default is 0
+    # Amount of informational vulnerabilities that are allowed to be discovered - if set to `-1` these will be ignored. (Default: 0)
+    allowedInformationalVulnerabilties: # optional, default is -1
+    # If set to true, this action will download Zap reports for you to attach to the job via actions/upload-artifact
+    downloadReports: # optional
+    # If set to true, this action will download all Sauce Labs job assets for you  to attach to the job via actions/upload-artifact
+    downloadJobAssets: # optional
+          name: NodeJS with Grunt
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: |
+        npm install
+        grunt

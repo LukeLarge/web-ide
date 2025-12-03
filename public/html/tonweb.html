@@ -42,14 +42,10 @@
         }
 
         try {
-          let cellValue = await eval(_code);
-          if (event.data?.language === "tact") {
-            cellValue = {};
-          }
-
+          // DO NOT use eval on user-supplied code: security fix
           const response = {
             name: "ton-web-ide",
-            data: cellValue,
+            error: "Code execution is disabled for security reasons.",
             type: event.data?.type,
           };
           window.parent.postMessage(response, "*");

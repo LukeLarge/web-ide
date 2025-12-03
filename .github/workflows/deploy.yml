@@ -33,6 +33,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Run deployment wf
         uses: the-actions-org/workflow-dispatch@v4

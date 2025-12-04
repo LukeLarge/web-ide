@@ -90,24 +90,24 @@
         ) {
           return;
         }
-        contractCode = `async function main() {
-                ${event.data.code}
-                prettify.toHTML(run(), document.getElementById('result'))
-            } main()`;
-        executeCodeInIframe(contractCode);
+        // SAFETY: Do not execute untrusted code!
+        // Instead, display code safely (do not inject).
+        document.getElementById('result').textContent = event.data.code;
       });
 
-      function executeCodeInIframe(codeInput) {
-        let script = document.getElementById("dynamicScript");
+      // Removed vulnerable code that executed user-supplied code.
 
-        if (!script) {
-          script = document.createElement("script");
-          script.id = "dynamicScript";
-          document.body.appendChild(script);
-        }
-
-        script.textContent = codeInput;
-      }
+      // function executeCodeInIframe(codeInput) {
+      //   let script = document.getElementById("dynamicScript");
+      // 
+      //   if (!script) {
+      //     script = document.createElement("script");
+      //     script.id = "dynamicScript";
+      //     document.body.appendChild(script);
+      //   }
+      // 
+      //   script.textContent = codeInput;
+      // }
     </script>
   </body>
 </html>
